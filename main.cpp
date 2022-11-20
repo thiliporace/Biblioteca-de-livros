@@ -62,21 +62,22 @@ void SalvarLivros(LinkedList *lista){
   }
   file.close();
 }
+
 // Disciplina;ISBN;T�tulo;Autor;Edi�o;Cidade;Editora;Ano;Bibliografia b�sica
 // isbn,titulo,autor,cidade,editora,disciplina,edicao,ano,bibliobasica
 void InserirLivro(LinkedList* lista,std::string isbn,std::string titulo,std::string autor,std::string cidade,std::string editora,std::string disciplina,int edicao,int ano, char bibliobasica){
   cout << "\nDigite o ISBN deste livro: ";
-  cin >> isbn;
+  getline(cin,isbn);
   cout << "\nDigite o titulo do livro que deseja inserir: ";
-  cin >> titulo;
+  getline(cin,titulo);
   cout << "\nDigite o autor deste livro: ";
-  cin >> autor;
+  getline(cin,autor);
   cout << "\nDigite a cidade em que este livro foi publicado: ";
-  cin >> cidade;
+  getline(cin,cidade);
   cout << "\nDigite a editora que publicou este livro: ";
-  cin >> editora;
+  getline(cin,editora);
   cout << "\nDigite a disciplina que o livro aborda: ";
-  cin >> disciplina;
+  getline(cin,disciplina);
   cout << "\nDigite a edicao deste livro(1,2,3,4,etc): ";
   cin >> edicao;
   cout << "\nDigite o ano que este livro foi publicado: ";
@@ -86,6 +87,83 @@ void InserirLivro(LinkedList* lista,std::string isbn,std::string titulo,std::str
   Append(lista,isbn,titulo,autor,cidade,editora,disciplina,edicao,ano,bibliobasica);
 }
 
+void AnaliseA(const LinkedList* lista){
+  string *estrangeiras {new string[16]{"Elsevier","Pearson","McGraw-Hill","The MIT Press","Addison-Wesley","Dover","Wiley","Cengage Learning","Campus","Brooks Cole","Academic Press","Springer","Packt Publishing","Chapman & Hall","Princeton University Press","CRC Press"}}; //elsevier,pearson,mcgraw-hill,the mit press,Addison-Wesley,dover,wiley,cengage,campus,brooks cole,academic press,springer,packt,chapman & hall,princeton,crc
+  string *brasileiras{new string[3]{"LTC","Bookman","Ibpex"}}; //ltc,bookman,ibpex
+  Node *aux = new Node;
+  aux = lista -> head;
+  float count_estrangeira = 0,count_br = 0;
+  for (int i = 0;i < lista -> count;i++){
+    for (int j = 0;j < 16;j++){
+      if (aux -> editora == estrangeiras[j]) count_estrangeira++;
+    }
+    aux = aux -> next;
+  }
+  aux = lista -> head;
+  for (int i = 0;i < lista -> count;i++){
+    for (int j = 0;j < 3;j++){
+      if (aux -> editora == brasileiras[j]) count_br++;
+    }
+    aux = aux -> next;
+  }
+  aux = nullptr;
+  float result = (count_br/(count_br+count_estrangeira))*100;
+  cout << "A porcentagem de livros publicados por editoras brasileiras e: " << result << "%\n" << "A porcentagem de livros publicados por editoras estrangeiras e: " << (100-result) << "%\n";
+  delete[] estrangeiras;
+  delete[] brasileiras;
+  delete aux;
+}
+
+void AnaliseB(const LinkedList *lista){
+  Node *aux = new Node;
+  aux = lista -> head;
+  float count = 0;
+  cout << "\n------------/ " << "LIVROS PUBLICADOS A PARTIR DE 2010 " << "/------------\n";
+  for (int i = 0;i < lista -> count;i++){
+    if (aux -> ano >= 2010) {
+      cout << "\n------------/ " << "LIVRO " << i << " DA LISTA " << "/------------\n";
+      cout << "Titulo: " << aux -> titulo << "\n";
+      cout << "ISBN: " << aux -> isbn << "\n";
+      cout << "Ano: " << aux -> ano << "\n";
+      count++;
+      }
+    aux = aux -> next;
+  }
+  aux = nullptr;
+  float result = (count/lista->count)*100;
+  cout << "A porcentagem de livros publicados a partir de 2010 na lista eh: " << result << "%\n";
+  delete aux;
+}
+
+void AnaliseC(const LinkedList *lista){
+  Node *aux = new Node;
+  Node *mais_antigo = new Node;
+  int count = 0;
+  mais_antigo = lista -> head;
+  aux = lista -> head;
+  for (int i = 0;i < lista -> count;i++){
+    if (aux -> ano < mais_antigo -> ano) mais_antigo = aux;
+    aux = aux -> next;
+  }
+  cout << "\n------------/ " << "LIVRO MAIS ANTIGO DA SUA BIBLIOTECA " << "/------------\n";
+  cout << "Titulo: " << mais_antigo -> titulo << "\n";
+  cout << "ISBN: " << mais_antigo -> isbn << "\n";
+  cout << "Ano: " << mais_antigo -> ano << "\n";
+  aux = lista -> head;
+  for (int i = 0;i < lista -> count;i++){
+    if ((mais_antigo -> ano == aux -> ano) && (mais_antigo -> titulo != aux -> titulo)){
+      cout << "\n------------/ " << "LIVROS DESTE MESMO ANO " << "/------------\n";
+      cout << "Titulo: " << aux -> titulo << "\n";
+      cout << "ISBN: " << aux -> isbn << "\n";
+      cout << "Ano: " << aux -> ano << "\n";
+    }
+    aux = aux -> next;
+  }
+  aux = nullptr;
+  mais_antigo = nullptr;
+  delete aux;
+  delete mais_antigo;
+}
 
 int main() {
   int entry;
@@ -114,7 +192,7 @@ int main() {
         cout << "Nao foi possivel abrir o arquivo.";
         break;
       }
-      while(true)//desfazer isso depois
+      while(true)
       {
         if (file.eof()) break;
         std::getline(file, str);
@@ -151,6 +229,7 @@ int main() {
           }
           i++;
         }
+        if (i == 0) break;
         Append(lista,isbn,titulo,autor,cidade,editora,disciplina,edicao,ano,bibliobasica);
       }
       break;
@@ -166,7 +245,7 @@ int main() {
       break;
       case 5:{
         Node* temp = RemoverLivro(lista,isbn,titulo);
-        if (temp == NULL){
+        if (temp == nullptr){
           cout << "Nao existe nenhum livro com este titulo.\n";
           break;
         }
@@ -178,16 +257,19 @@ int main() {
         }
       
       case 6:
+        AnaliseA(lista);
       break;
       
       case 7:
+        AnaliseB(lista);
       break;
       
       case 8:
+        AnaliseC(lista);
       break;
       
       case 9:
-      cout << "Fechando terminal.........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................\n";
+      cout << "Fechando terminal...\n";
       flag = false;
       break;
     }
