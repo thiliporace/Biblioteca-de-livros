@@ -58,32 +58,8 @@ void Append(LinkedList *lista,std::string isbn,std::string titulo,std::string au
   lista -> tail -> next = lista -> head;
 }
 
-// Node* RemoveHead(LinkedList *lista){
-//   if (lista -> count == 0) return NULL;
-//   Node *toRemove = new Node;
-//   toRemove -> id = lista -> head -> id;
-//   toRemove -> nome = lista -> head -> nome;
-//   lista -> head -> previous -> next = nullptr;
-//   lista -> head -> previous = nullptr;
-//   lista -> head = lista -> head -> next;
-//   lista -> count--;
-//   return toRemove;
-// }
-
-// Node* RemoveTail(LinkedList *lista){
-//   if (lista -> head == lista -> tail) RemoveHead(lista);
-//   Node *toRemove = new Node;
-//   toRemove -> id = lista -> tail -> id;
-//   toRemove -> nome = lista -> tail -> nome;
-//   lista -> tail = lista -> tail -> previous;
-//   lista -> tail -> next -> previous = nullptr;
-//   lista -> tail -> next = nullptr;
-//   lista -> count--;
-//   return toRemove;
-// }
-
 Node *RemoveNode(LinkedList *lista,std::string isbn,std::string titulo){
-  Node *toRemove = new Node;
+  Node *toRemove;
   int i = lista -> count;
   toRemove = lista -> head;
   while((toRemove -> titulo != titulo) && (toRemove -> isbn != isbn)){
@@ -108,13 +84,12 @@ Node *RemoveNode(LinkedList *lista,std::string isbn,std::string titulo){
     return toRemove;
   }
   else{
-    delete toRemove;
     return nullptr;
   }
 }
 
 void Clear(LinkedList *lista){
-  Node *aux = new Node;
+  Node *aux;
   while (lista -> count != 0){
     aux = lista -> head;
     lista -> head = lista -> head -> next;
@@ -129,32 +104,6 @@ void Destroy(LinkedList *lista){
   Clear(lista);
   delete lista;
 }
-
-Node *GetHead(const LinkedList *lista){
-  return lista -> head;
-}
-
-Node *GetTail(const LinkedList *lista){
-  return lista -> tail;
-}
-
-// Node *GetNode(const LinkedList *lista,std::string isbn,std::string titulo,std::string autor,std::string cidade,std::string editora,std::string disciplina,int edicao, int ano, char bibliobasica){
-//   Node* nodo = new Node;
-//   int i = lista -> count;
-//   nodo  = lista -> head;
-//   while ((nodo -> titulo != titulo) || (nodo -> isbn != isbn) ||(nodo -> autor != autor) ||(nodo -> cidade != cidade) ||(nodo -> editora != editora) ||(nodo -> disciplina != disciplina) ||(nodo -> edicao != edicao ||nodo -> ano != ano) || (nodo -> bibliobasica != bibliobasica)){
-//     if (nodo -> titulo == titulo){
-//       std::cout << "Titulo:\n" << "[" << nodo -> titulo << "]" << " " <<    nodo -> titulo << "\n";
-//       return nodo;
-//       }
-//     nodo = nodo -> next;
-//     i--;
-//     if (i == 0) break;
-//   }
-//   std::cout << "Nao ha nodo com o titulo solicitado.\n";
-//   delete nodo;
-//   return nullptr;
-// }
 
 int Count(LinkedList *lista){
   return lista -> count;

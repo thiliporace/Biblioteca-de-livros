@@ -7,8 +7,6 @@
 
 using namespace std;
 
-void Append(LinkedList *lista,std::string isbn,std::string titulo,std::string autor,std::string cidade,std::string editora,std::string disciplina,int edicao, int ano, char bibliobasica);
-
 void Print(const LinkedList* lista)
 {
   cout << "----------------------------------------------------------------------\n";
@@ -34,7 +32,7 @@ Node *RemoverLivro(LinkedList *lista,std::string isbn,std::string titulo){
   cout << "Quer remover um livro pelo ISBN(1) ou pelo Titulo(2)? Digite o numero correspondente.\n";
   cin >> opcao;
   cin.ignore();
-  Node *livro = new Node;
+  Node *livro;
   if (opcao == 1){
     titulo = "";
     cout << "Digite o ISBN do livro que deseja remover:";
@@ -85,9 +83,9 @@ void InserirLivro(LinkedList* lista,std::string isbn,std::string titulo,std::str
 }
 
 void AnaliseA(const LinkedList* lista){
-  string *estrangeiras {new string[16]{"Elsevier","Pearson","McGraw-Hill","The MIT Press","Addison-Wesley","Dover","Wiley","Cengage Learning","Campus","Brooks Cole","Academic Press","Springer","Packt Publishing","Chapman & Hall","Princeton University Press","CRC Press"}}; 
-  string *brasileiras{new string[3]{"LTC","Bookman","Ibpex"}}; 
-  Node *aux = new Node;
+  string estrangeiras[16] = {"Elsevier","Pearson","McGraw-Hill","The MIT Press","Addison-Wesley","Dover","Wiley","Cengage Learning","Campus","Brooks Cole","Academic Press","Springer","Packt Publishing","Chapman & Hall","Princeton University Press","CRC Press"}; 
+  string brasileiras[3] = {"LTC","Bookman","Ibpex"}; 
+  Node *aux;
   aux = lista -> head;
   float count_estrangeira = 0,count_br = 0;
   for (int i = 0;i < lista -> count;i++){
@@ -109,13 +107,10 @@ void AnaliseA(const LinkedList* lista){
   cout << "A quantidade total de livros publicados por editoras brasileiras eh: " << count_br << "\nE a quantidade total de livros publicados por editoras estrangeiras eh: " << count_estrangeira;
   cout << "\n----------------------------------------------------------------------\n";
   cout << "A porcentagem de livros publicados por editoras brasileiras e: " << result << "%\n" << "A porcentagem de livros publicados por editoras estrangeiras e: " << (100-result) << "%\n";
-  delete[] estrangeiras;
-  delete[] brasileiras;
-  delete aux;
 }
 
 void AnaliseB(const LinkedList *lista){
-  Node *aux = new Node;
+  Node *aux;
   aux = lista -> head;
   float count = 0;
   int entry;
@@ -135,12 +130,11 @@ void AnaliseB(const LinkedList *lista){
   aux = nullptr;
   float result = (count/lista->count)*100;
   cout << "A porcentagem de livros publicados a partir de " << entry << " na lista eh: " << result << "%\n";
-  delete aux;
 }
 
 void AnaliseC(const LinkedList *lista){
-  Node *aux = new Node;
-  Node *mais_antigo = new Node;
+  Node *aux;
+  Node *mais_antigo;
   int count = 0;
   mais_antigo = lista -> head;
   aux = lista -> head;
@@ -162,10 +156,6 @@ void AnaliseC(const LinkedList *lista){
     }
     aux = aux -> next;
   }
-  aux = nullptr;
-  mais_antigo = nullptr;
-  delete aux;
-  delete mais_antigo;
 }
 
 int main() {
