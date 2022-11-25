@@ -1,9 +1,8 @@
 // Lucas Goulart de Farias Meres - 42127459
 // Thiago Leandro Liporace - 42128481
 
-//Referencias:
+//Referências: Trabalho Lista Circular Duplamente Encadeada, PDFs disponibilizados no moodle, alphacodingskills.com e StackOverflow para aprender como ler arquivos em C++.
 
-//TODO.
 #include "LinkedList.h"
 
 using namespace std;
@@ -53,7 +52,7 @@ Node *RemoverLivro(LinkedList *lista,std::string isbn,std::string titulo){
 
 void SalvarLivros(LinkedList *lista){
   std::fstream file;
-  file.open("teste.csv"); //depois trocar pra bibliografia
+  file.open("bibliografia.csv");
   Node *aux = lista -> head;
   file << "Disciplina;ISBN;T�tulo;Autor;Edi�o;Cidade;Editora;Ano;Bibliografia b�sica\n";
   for (int i = 0;i < lista -> count;i++){
@@ -63,8 +62,6 @@ void SalvarLivros(LinkedList *lista){
   file.close();
 }
 
-// Disciplina;ISBN;T�tulo;Autor;Edi�o;Cidade;Editora;Ano;Bibliografia b�sica
-// isbn,titulo,autor,cidade,editora,disciplina,edicao,ano,bibliobasica
 void InserirLivro(LinkedList* lista,std::string isbn,std::string titulo,std::string autor,std::string cidade,std::string editora,std::string disciplina,int edicao,int ano, char bibliobasica){
   cout << "\nDigite o ISBN deste livro: ";
   getline(cin,isbn);
@@ -88,8 +85,8 @@ void InserirLivro(LinkedList* lista,std::string isbn,std::string titulo,std::str
 }
 
 void AnaliseA(const LinkedList* lista){
-  string *estrangeiras {new string[16]{"Elsevier","Pearson","McGraw-Hill","The MIT Press","Addison-Wesley","Dover","Wiley","Cengage Learning","Campus","Brooks Cole","Academic Press","Springer","Packt Publishing","Chapman & Hall","Princeton University Press","CRC Press"}}; //elsevier,pearson,mcgraw-hill,the mit press,Addison-Wesley,dover,wiley,cengage,campus,brooks cole,academic press,springer,packt,chapman & hall,princeton,crc
-  string *brasileiras{new string[3]{"LTC","Bookman","Ibpex"}}; //ltc,bookman,ibpex
+  string *estrangeiras {new string[16]{"Elsevier","Pearson","McGraw-Hill","The MIT Press","Addison-Wesley","Dover","Wiley","Cengage Learning","Campus","Brooks Cole","Academic Press","Springer","Packt Publishing","Chapman & Hall","Princeton University Press","CRC Press"}}; 
+  string *brasileiras{new string[3]{"LTC","Bookman","Ibpex"}}; 
   Node *aux = new Node;
   aux = lista -> head;
   float count_estrangeira = 0,count_br = 0;
@@ -108,6 +105,9 @@ void AnaliseA(const LinkedList* lista){
   }
   aux = nullptr;
   float result = (count_br/(count_br+count_estrangeira))*100;
+  cout << "----------------------------------------------------------------------\n";
+  cout << "A quantidade total de livros publicados por editoras brasileiras eh: " << count_br << "\nE a quantidade total de livros publicados por editoras estrangeiras eh: " << count_estrangeira;
+  cout << "\n----------------------------------------------------------------------\n";
   cout << "A porcentagem de livros publicados por editoras brasileiras e: " << result << "%\n" << "A porcentagem de livros publicados por editoras estrangeiras e: " << (100-result) << "%\n";
   delete[] estrangeiras;
   delete[] brasileiras;
@@ -118,9 +118,12 @@ void AnaliseB(const LinkedList *lista){
   Node *aux = new Node;
   aux = lista -> head;
   float count = 0;
-  cout << "\n------------/ " << "LIVROS PUBLICADOS A PARTIR DE 2010 " << "/------------\n";
+  int entry;
+  cout << "Esta analise ira apresentar todos os livros lancados a partir do ano selecionado." << '\n' <<  "Digite o ano desejado para esta busca: ";
+  cin >> entry;
+  cout << "\n------------/ " << "LIVROS PUBLICADOS A PARTIR DE " << entry << " /------------\n";
   for (int i = 0;i < lista -> count;i++){
-    if (aux -> ano >= 2010) {
+    if (aux -> ano >= entry) {
       cout << "\n------------/ " << "LIVRO " << i << " DA LISTA " << "/------------\n";
       cout << "Titulo: " << aux -> titulo << "\n";
       cout << "ISBN: " << aux -> isbn << "\n";
@@ -131,7 +134,7 @@ void AnaliseB(const LinkedList *lista){
   }
   aux = nullptr;
   float result = (count/lista->count)*100;
-  cout << "A porcentagem de livros publicados a partir de 2010 na lista eh: " << result << "%\n";
+  cout << "A porcentagem de livros publicados a partir de " << entry << " na lista eh: " << result << "%\n";
   delete aux;
 }
 
@@ -167,6 +170,7 @@ void AnaliseC(const LinkedList *lista){
 
 int main() {
   int entry;
+  int flag2 = 0;
   bool flag = true;
   std::string str;
   std::fstream file;
@@ -176,7 +180,7 @@ int main() {
   char bibliobasica;
   LinkedList *lista = Create();
   while(flag == true){
-    cout << "\n----------------------- BIBLIOTECA DE LIVROS ;-;-----------------------\n";
+    cout << "\n----------------------- BIBLIOTECA DE LIVROS ------------------------\n";
     cout << "1. Ler dados\n2. Exibir dados\n3. Salvar dados\n4. Inserir livro\n5. Remover livro\n6. Análise de dados A\n7. Análise de dados B\n8. Análise de dados C\n9. Encerrar\n";
     cout << "Digite o numero da opcao desejada: ";
     cin >> entry;
@@ -192,6 +196,7 @@ int main() {
         cout << "Nao foi possivel abrir o arquivo.";
         break;
       }
+      flag2 = 1;
       while(true)
       {
         if (file.eof()) break;
@@ -235,15 +240,31 @@ int main() {
       break;
       }
       case 2:
-        Print(lista);
+      if (flag2 == 0){
+        cout << "\nEh necessario a leitura de dados antes que esse comando seja executado.\n";
+        break;
+      }
+      Print(lista);
       break;
       case 3:
+      if (flag2 == 0){
+        cout << "\nEh necessario a leitura de dados antes que esse comando seja executado.\n";
+        break;
+      }
         SalvarLivros(lista);
       break;
       case 4:
+        if (flag2 == 0){
+        cout << "\nEh necessario a leitura de dados antes que esse comando seja executado.\n";
+        break;
+      }
         InserirLivro(lista,isbn,titulo,autor,cidade,editora,disciplina,edicao,ano,bibliobasica);
       break;
       case 5:{
+        if (flag2 == 0){
+        cout << "\nEh necessario a leitura de dados antes que esse comando seja executado.\n";
+        break;
+      }
         Node* temp = RemoverLivro(lista,isbn,titulo);
         if (temp == nullptr){
           cout << "Nao existe nenhum livro com este titulo.\n";
@@ -257,18 +278,31 @@ int main() {
         }
       
       case 6:
-        AnaliseA(lista);
+      if (flag2 == 0){
+        cout << "\nEh necessario a leitura de dados antes que esse comando seja executado.\n";
+        break;
+      }
+      AnaliseA(lista);
       break;
       
       case 7:
-        AnaliseB(lista);
+      if (flag2 == 0){
+        cout << "\nEh necessario a leitura de dados antes que esse comando seja executado.\n";
+        break;
+      }
+      AnaliseB(lista);
       break;
       
       case 8:
-        AnaliseC(lista);
+      if (flag2 == 0){
+        cout << "\nEh necessario a leitura de dados antes que esse comando seja executado.\n";
+        break;
+      }
+      AnaliseC(lista);
       break;
       
       case 9:
+      Destroy(lista);
       cout << "Fechando terminal...\n";
       flag = false;
       break;

@@ -138,23 +138,23 @@ Node *GetTail(const LinkedList *lista){
   return lista -> tail;
 }
 
-Node *GetNode(const LinkedList *lista,std::string isbn,std::string titulo,std::string autor,std::string cidade,std::string editora,std::string disciplina,int edicao, int ano, char bibliobasica){
-  Node* nodo = new Node;
-  int i = lista -> count;
-  nodo  = lista -> head;
-  while ((nodo -> titulo != titulo) || (nodo -> isbn != isbn) ||(nodo -> autor != autor) ||(nodo -> cidade != cidade) ||(nodo -> editora != editora) ||(nodo -> disciplina != disciplina) ||(nodo -> edicao != edicao ||nodo -> ano != ano) || (nodo -> bibliobasica != bibliobasica)){
-    if (nodo -> titulo == titulo){
-      std::cout << "Titulo:\n" << "[" << nodo -> titulo << "]" << " " <<    nodo -> titulo << "\n";
-      return nodo;
-      }
-    nodo = nodo -> next;
-    i--;
-    if (i == 0) break;
-  }
-  std::cout << "Nao ha nodo com o titulo solicitado.\n";
-  delete nodo;
-  return nullptr;
-}
+// Node *GetNode(const LinkedList *lista,std::string isbn,std::string titulo,std::string autor,std::string cidade,std::string editora,std::string disciplina,int edicao, int ano, char bibliobasica){
+//   Node* nodo = new Node;
+//   int i = lista -> count;
+//   nodo  = lista -> head;
+//   while ((nodo -> titulo != titulo) || (nodo -> isbn != isbn) ||(nodo -> autor != autor) ||(nodo -> cidade != cidade) ||(nodo -> editora != editora) ||(nodo -> disciplina != disciplina) ||(nodo -> edicao != edicao ||nodo -> ano != ano) || (nodo -> bibliobasica != bibliobasica)){
+//     if (nodo -> titulo == titulo){
+//       std::cout << "Titulo:\n" << "[" << nodo -> titulo << "]" << " " <<    nodo -> titulo << "\n";
+//       return nodo;
+//       }
+//     nodo = nodo -> next;
+//     i--;
+//     if (i == 0) break;
+//   }
+//   std::cout << "Nao ha nodo com o titulo solicitado.\n";
+//   delete nodo;
+//   return nullptr;
+// }
 
 int Count(LinkedList *lista){
   return lista -> count;
